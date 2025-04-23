@@ -29,6 +29,8 @@ Each service is containerized using Docker for the following reasons:
 - Docker
 - Docker Compose
 
+This setup does not require your machine to have nodejs installed
+
 ## Getting Started
 
 1. Clone the repository:
@@ -39,18 +41,18 @@ cd todo-tasks-nestjs-elk
 
 2. Initialize the environment
 ```bash
-make init
+make init # after running "make clean" make sure to initialize again for further usage.
 ```
 
 3. Build and start the services:
 ```bash
-make 
+make start-dev
 ```
 
 3. Access the services:
 - Backend API: http://localhost:3000
 - Kibana Dashboard: http://localhost:5601
-- MongoDB: localhost:27017
+- MongoDB: http://localhost:27017
 - Mongo Express: http://localhost:8081
 - Elasticsearch: http://localhost:9200
 
@@ -118,9 +120,8 @@ The dashboard includes:
 
 For local development:
 ```bash
-cd backend
-npm install
-npm run start:dev
+make init # if not initialized before
+make start-dev
 ```
 
 The backend service supports hot-reloading when running in development mode.
@@ -129,24 +130,5 @@ The backend service supports hot-reloading when running in development mode.
 
 To stop all services:
 ```bash
-docker-compose down
+make clean
 ```
-
-To stop and remove volumes (this will delete all data):
-```bash
-docker-compose down -v
-```
-
-## Environment Variables
-
-- `NODE_ENV`: Application environment (development/production)
-- `MONGO_URI`: MongoDB connection string
-- `ELASTICSEARCH_HOSTS`: Elasticsearch connection string
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request 

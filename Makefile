@@ -5,7 +5,10 @@ DOCKER_COMPOSE_DEV = DOCKERFILE=Dockerfile.dev NODE_ENV=development VOLUMES=./ba
 DOCKER_COMPOSE_PROD = NODE_ENV=production docker compose
 
 init:
-	mkdir .state
+	mkdir -p .state
+	cp ./backend/.env.example ./backend/.env
+	@echo "Installing node_modules using Docker container..."
+	$(DOCKER_COMPOSE_DEV) run --rm -w /app backend npm install
 
 help:
 	@echo "Available targets:"
