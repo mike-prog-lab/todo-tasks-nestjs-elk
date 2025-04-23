@@ -1,4 +1,4 @@
-.PHONY: help build-dev build-prod test test-e2e start-dev start-prod clean deploy-dev deploy-prod
+.PHONY: help build-dev build-prod test test-e2e start-dev start-prod clean deploy-dev deploy-prod exec
 
 DOCKER_COMPOSE = docker compose
 DOCKER_COMPOSE_DEV = DOCKERFILE=Dockerfile.dev NODE_ENV=development VOLUMES=./backend:/app:delegated docker compose
@@ -6,7 +6,7 @@ DOCKER_COMPOSE_PROD = NODE_ENV=production docker compose
 
 init:
 	mkdir -p .state
-	cp ./backend/.env.example ./backend/.env
+	cp -u ./backend/.env.example ./backend/.env
 	@echo "Installing node_modules using Docker container..."
 	$(DOCKER_COMPOSE_DEV) run --rm -w /app backend npm install
 
@@ -22,6 +22,7 @@ help:
 	@echo "  clean         - Clean up containers and volumes"
 	@echo "  deploy-dev    - Deploy to development environment"
 	@echo "  deploy-prod   - Deploy to production environment"
+	@echo "  exec          - Execute a command in the backend container"
 
 build-dev:
 	@echo "Building development environment..."
@@ -52,3 +53,7 @@ clean:
 	$(DOCKER_COMPOSE) down -v
 	@echo "Removing node_modules..."
 	rm -rf backend/node_modules
+
+exec:
+	@echo "Executing command in backend container..."
+	$(DOCKER_COMPOSE_DEV) exec backend sh $(filter-out $@,$(MAKECMDGOALS))

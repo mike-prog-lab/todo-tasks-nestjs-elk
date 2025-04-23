@@ -124,6 +124,11 @@ make init # if not initialized before
 make start-dev
 ```
 
+Execute into container to perform CLI operations:
+```bash
+make exec # make sure that "make start-dev" is running
+```
+
 The backend service supports hot-reloading when running in development mode.
 
 ## Stopping the Services
