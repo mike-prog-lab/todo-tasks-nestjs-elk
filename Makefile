@@ -6,7 +6,9 @@ DOCKER_COMPOSE_PROD = NODE_ENV=production docker compose
 
 init:
 	mkdir -p .state
-	cp -u ./backend/.env.example ./backend/.env
+	@if [ ! -f ./backend/.env ]; then \
+		cp ./backend/.env.example ./backend/.env; \
+	fi
 	@echo "Installing node_modules using Docker container..."
 	$(DOCKER_COMPOSE_DEV) run --rm -w /app backend npm install
 
